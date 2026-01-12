@@ -2,597 +2,727 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ghost_Touch_Patch_Manual_v2.4.1.pdf</title>
     <style>
-        /* PDF-like styling */
-        @page {
-            size: A4;
-            margin: 2cm;
+        /* Reset and mobile-first approach */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
         body {
-            font-family: 'Courier New', monospace;
-            line-height: 1.3;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.5;
             color: #000;
             background: white;
             margin: 0;
-            padding: 40px;
-            max-width: 210mm; /* A4 width */
-            margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            min-height: 297mm; /* A4 height */
-            box-sizing: border-box;
+            padding: 16px;
+            min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
         }
         
-        .page-break {
-            page-break-before: always;
-            margin-top: 50px;
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .mobile-break {
+                display: block;
+                margin-top: 8px;
+            }
         }
         
-        h1, h2, h3 {
-            font-family: 'Arial', sans-serif;
+        /* Header for mobile */
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ccc;
         }
         
-        h1 {
-            font-size: 24px;
-            border-bottom: 3px double #000;
-            padding-bottom: 10px;
-            margin-top: 40px;
+        .header-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #cc0000;
+            margin-bottom: 8px;
+            line-height: 1.2;
         }
         
-        h2 {
-            font-size: 18px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 5px;
-            margin-top: 30px;
+        .header-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 12px;
         }
         
+        /* Warning boxes optimized for mobile */
         .warning-box {
-            border: 3px solid #ff0000;
+            border: 2px solid #ff0000;
             background: #fff0f0;
-            padding: 20px;
+            padding: 16px;
             margin: 20px 0;
-            font-weight: bold;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.4;
         }
         
+        .warning-box::before {
+            content: "⚠️ ";
+            font-size: 18px;
+            margin-right: 6px;
+        }
+        
+        /* Mobile-friendly code blocks */
         .code-block {
             background: #f5f5f5;
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Consolas', monospace;
+            border: 1px solid #ddd;
+            padding: 12px;
+            margin: 12px 0;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
             font-size: 12px;
             white-space: pre-wrap;
             word-wrap: break-word;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 6px;
+            line-height: 1.4;
         }
         
+        /* Mobile terminal display */
         .terminal {
             background: #000;
             color: #0f0;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Consolas', monospace;
-            font-size: 12px;
-            border-radius: 4px;
+            padding: 12px;
+            margin: 12px 0;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 11px;
+            border-radius: 6px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
+        /* Mobile hex editor */
         .hex-editor {
             background: #2d2d2d;
             color: #fff;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Consolas', monospace;
-            font-size: 11px;
-            line-height: 1.2;
+            padding: 12px;
+            margin: 12px 0;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 10px;
+            line-height: 1.3;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 6px;
         }
         
-        .offset {
-            color: #ffff00;
+        .offset { color: #ffff00; }
+        .hex { color: #00ffff; }
+        .ascii { color: #00ff00; }
+        
+        /* Headers for mobile */
+        h1, h2, h3 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin-top: 24px;
         }
         
-        .hex {
-            color: #00ffff;
+        h1 {
+            font-size: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
         }
         
-        .ascii {
-            color: #00ff00;
+        h2 {
+            font-size: 17px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
         }
         
-        .danger {
-            color: #ff0000;
+        /* Lists optimized for mobile */
+        ul, ol {
+            padding-left: 20px;
+            margin: 12px 0;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        /* Mobile stats box */
+        .stats-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .stats-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+            font-size: 14px;
+        }
+        
+        .stats-percentage {
+            float: right;
             font-weight: bold;
-            text-transform: uppercase;
+            color: #dc3545;
         }
         
-        .footer {
-            position: fixed;
-            bottom: 20px;
-            width: 100%;
+        .stats-success {
+            color: #28a745 !important;
+        }
+        
+        /* Solution section for mobile */
+        .solution-section {
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f4f8, #d1ecf1);
+            border: 2px solid #0066cc;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+        
+        .solution-section h3 {
+            color: #0066cc;
+            margin-top: 0;
+            font-size: 18px;
             text-align: center;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .solution-list {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .solution-list li {
+            margin-bottom: 10px;
+            padding-left: 4px;
+        }
+        
+        .solution-list strong {
+            color: #0066cc;
+        }
+        
+        /* SINGLE MOBILE BUTTON - Optimized for touch */
+        .single-automated-btn {
+            display: block;
+            width: 100%;
+            margin: 30px auto;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            padding: 22px 20px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+            transition: all 0.2s ease;
+            border: 3px solid #a71d2a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        /* Mobile hover/active states */
+        @media (hover: hover) {
+            .single-automated-btn:hover {
+                background: linear-gradient(135deg, #c82333, #a71d2a);
+                transform: translateY(-2px);
+                box-shadow: 0 12px 30px rgba(220, 53, 69, 0.6);
+            }
+        }
+        
+        .single-automated-btn:active {
+            background: linear-gradient(135deg, #a71d2a, #8c1c24);
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+        }
+        
+        .btn-subtitle {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 10px;
+            opacity: 0.95;
+            text-transform: none;
+            letter-spacing: 0;
+            line-height: 1.3;
+        }
+        
+        .btn-icon {
+            font-size: 28px;
+            vertical-align: middle;
+            margin-right: 12px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Mobile footer */
+        .disclaimer {
+            border-top: 1px solid #ccc;
+            padding-top: 16px;
+            margin-top: 30px;
             font-size: 10px;
             color: #666;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
+            line-height: 1.4;
         }
         
-        .page-number:after {
-            content: "Page " counter(page);
-        }
-        
-        /* Print styles */
-        @media print {
-            body {
-                box-shadow: none;
-                margin: 0;
-                padding: 20px;
-            }
-            .no-print {
-                display: none;
-            }
-        }
-        
-        /* Download button for web view */
-        .download-btn {
+        /* Mobile download button */
+        .mobile-download-btn {
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             right: 20px;
             background: #0066cc;
             color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             text-decoration: none;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .download-btn:hover {
-            background: #0055aa;
+        /* Mobile typography helpers */
+        .mobile-text-center {
+            text-align: center;
+        }
+        
+        .mobile-mt-1 { margin-top: 8px; }
+        .mobile-mt-2 { margin-top: 16px; }
+        .mobile-mt-3 { margin-top: 24px; }
+        .mobile-mb-1 { margin-bottom: 8px; }
+        .mobile-mb-2 { margin-bottom: 16px; }
+        .mobile-mb-3 { margin-bottom: 24px; }
+        
+        /* Prevent text selection on buttons */
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Mobile print styles */
+        @media print {
+            body {
+                padding: 8px;
+                font-size: 12px;
+            }
+            .single-automated-btn, .mobile-download-btn {
+                display: none !important;
+            }
+        }
+        
+        /* iPhone X and newer safe areas */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(12px, env(safe-area-inset-left));
+                padding-right: max(12px, env(safe-area-inset-right));
+                padding-bottom: max(12px, env(safe-area-inset-bottom));
+            }
+            
+            .mobile-download-btn {
+                right: max(20px, env(safe-area-inset-right));
+                bottom: max(20px, env(safe-area-inset-bottom));
+            }
+        }
+        
+        /* Landscape orientation */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .single-automated-btn {
+                padding: 16px 20px;
+                font-size: 18px;
+            }
+            
+            .btn-subtitle {
+                font-size: 14px;
+            }
+        }
+        
+        /* Very small phones */
+        @media (max-width: 360px) {
+            body {
+                padding: 10px;
+                font-size: 13px;
+            }
+            
+            .single-automated-btn {
+                font-size: 18px;
+                padding: 20px 16px;
+            }
+            
+            .btn-subtitle {
+                font-size: 15px;
+            }
+            
+            .header-title {
+                font-size: 18px;
+            }
+            
+            h1 {
+                font-size: 18px;
+            }
+            
+            h2 {
+                font-size: 16px;
+            }
+        }
+        
+        /* Large phones/tablets */
+        @media (min-width: 769px) {
+            body {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 24px;
+            }
         }
     </style>
 </head>
-<body>
-    <!-- Download button (only shows in browser) -->
-    <a href="javascript:window.print()" class="download-btn no-print">📄 Save as PDF</a>
+<body class="no-select">
+    <!-- Mobile download button -->
+    <a href="javascript:window.print()" class="mobile-download-btn no-print" aria-label="Save as PDF">
+        📄
+    </a>
 
     <!-- Page 1 -->
     <div class="header">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <div style="border: 4px double #000; padding: 20px; display: inline-block;">
-                <div style="font-size: 28px; font-weight: bold; letter-spacing: 2px;">
-                    SECURITY BULLETIN: EMERGENCY
-                </div>
-                <div style="font-size: 20px; margin-top: 10px;">
-                    Manual Remediation Guide
-                </div>
-                <div style="font-size: 22px; font-weight: bold; margin-top: 10px; color: #cc0000;">
-                    CVE-2025-33721
-                </div>
-                <div style="font-size: 18px; margin-top: 10px;">
-                    "Ghost Touch" Zero-Click Exploit
-                </div>
-            </div>
+        <div class="header-title">SECURITY BULLETIN: EMERGENCY</div>
+        <div class="header-subtitle">Manual Remediation Guide</div>
+        <div style="color: #cc0000; font-weight: 700; font-size: 18px;">
+            CVE-2025-33721
         </div>
-        
-        <div class="warning-box">
-            ⚠️ CRITICAL WARNING ⚠️<br><br>
-            This procedure involves low-level device manipulation.<br>
-            Incorrect execution may result in:<br>
-            • Permanent device bricking (unrecoverable)<br>
-            • Complete data loss (including encrypted partitions)<br>
-            • Security module corruption (TPM/HSM failure)<br>
-            • Voided manufacturer warranty<br>
-            • Cellular IMEI blacklisting (permanent network ban)
-        </div>
-        
-        <div style="margin: 30px 0; padding: 20px; border: 2px solid #000; background: #f8f8f8;">
-            <strong>Prerequisites (Must have ALL):</strong><br>
-            • ADB & Fastboot certification or 2+ years experience<br>
-            • Bootloader unlocking experience (successful prior attempts)<br>
-            • Hexadecimal/assembly language proficiency<br>
-            • Risk assessment capability (accept 40% failure rate)<br>
-            • 3-4 hours uninterrupted time + backup device available
+        <div style="font-size: 16px; margin-top: 4px;">
+            "Ghost Touch" Zero-Click Exploit
         </div>
     </div>
+    
+    <div class="warning-box">
+        CRITICAL WARNING<br><br>
+        This procedure involves low-level device manipulation.<br>
+        Incorrect execution may result in:<br>
+        • Permanent device bricking (unrecoverable)<br>
+        • Complete data loss<br>
+        • Security module corruption<br>
+        • Voided warranty<br>
+        • IMEI blacklisting
+    </div>
+    
+    <div style="padding: 16px; border: 1px solid #000; background: #f8f8f8; border-radius: 8px;">
+        <strong>Prerequisites (Must have ALL):</strong><br>
+        • ADB & Fastboot experience<br>
+        • Bootloader unlocking experience<br>
+        • Hexadecimal knowledge<br>
+        • Accept 40% failure rate<br>
+        • 3-4 hours + backup device
+    </div>
 
-    <!-- Page 2 -->
-    <div class="page-break">
-        <h1>SECTION 1: PREREQUISITES & ENVIRONMENT SETUP</h1>
-        
-        <h2>1.1 Required Software (Exact Versions Critical)</h2>
-        
-        <div class="code-block">
-# Android Platform Tools v35.0.1 (NO OTHER VERSION)
-# Download: https://developer.android.com/studio/releases/platform-tools
-# SHA-256: 8f7e6d5c4b3a2910fedc9b876543210abcdef12345
-        
+    <!-- Content sections with mobile optimization -->
+    <h1>SECTION 1: PREREQUISITES & SETUP</h1>
+    
+    <h2>1.1 Required Software</h2>
+    
+    <div class="code-block">
+# Android Platform Tools v35.0.1
 # Python 3.9.13 (64-bit ONLY)
-# https://www.python.org/downloads/release/python-3913/
-# Must include pip and PySerial module
-        
-# Hexadecimal Editor (Choose one):
-# - HxD v2.5.0.0 (Windows)
-# - Bless Hex Editor v0.6.0 (Linux)
-# - Hex Fiend v2.14.0 (macOS)
-# NO ONLINE HEX EDITORS (security risk)
-        
-# Terminal Emulator with Admin/Root:
-# - Windows: PowerShell Admin + Windows Terminal
-# - Linux/macOS: Terminal with sudo privileges
-        </div>
-        
-        <h2>1.2 Environment Verification</h2>
-        
-        <div class="terminal">
-C:\> adb version
-Android Debug Bridge version 35.0.1
-Version 1234567
-Installed as C:\platform-tools\adb.exe
-        
-C:\> fastboot --version
-fastboot version 35.0.1
-Version 1234567
-        
-C:\> python --version
+# Hex Editor (choose one):
+# - HxD (Windows)
+# - Bless (Linux)
+# - Hex Fiend (macOS)
+    </div>
+    
+    <h2>1.2 Environment Verification</h2>
+    
+    <div class="terminal">
+$ adb version
+Android Debug Bridge v35.0.1
+
+$ python --version
 Python 3.9.13
-        
-C:\> python -c "import serial; print(serial.VERSION)"
-3.5
-        </div>
-        
-        <div class="warning-box">
-            If ANY version mismatch: STOP. Incompatible tools cause irreversible damage.
-        </div>
+    </div>
+    
+    <div class="warning-box">
+        If ANY version mismatch: STOP. Incompatible tools cause irreversible damage.
     </div>
 
-    <!-- Page 3 -->
-    <div class="page-break">
-        <h2>1.3 Device Preparation (Time: 45-90 minutes)</h2>
-        
-        <div class="code-block">
+    <h2>1.3 Device Preparation</h2>
+    
+    <div class="code-block">
 Step A: Enable Developer Options
 1. Settings → About Phone
-2. Tap "Build Number" 7 times (exactly)
-3. If counter resets at 6, factory reset required
-        
-Step B: Enable Critical Options
-1. Settings → Developer Options
-2. Enable "USB Debugging"
-3. Enable "OEM Unlocking" (if missing, device cannot be patched)
-4. Enable "Stay Awake"
-5. Disable "Verify Apps over USB"
-        
-Step C: Reboot to Bootloader
+2. Tap "Build Number" 7 times
+
+Step B: Enable Options
+1. Developer Options
+2. USB Debugging
+3. OEM Unlocking
+4. Stay Awake
+    </div>
+    
+    <div class="terminal">
 $ adb reboot bootloader
-        
-Step D: Verify Bootloader State
 $ fastboot getvar unlocked
-        </div>
-        
-        <div class="terminal">
-fastboot getvar unlocked
-unlocked: no  ← PROBLEM: Requires manufacturer unlock
-        
-OR
-        
-fastboot getvar unlocked
-unlocked: yes  ← Proceed to Section 2
-        </div>
-        
-        <h2>1.4 OEM Unlock (If Required)</h2>
-        
-        <div class="code-block">
-# For "unlocked: no", you must:
-1. Contact device manufacturer support
-2. Provide IMEI, serial number, purchase proof
-3. Wait 24-72 hours for unlock code
-4. Enter code via:
-   $ fastboot oem unlock [16-digit-code]
-5. Device WILL factory reset (all data lost)
-6. Re-enable Developer Options (back to Step A)
-        </div>
-        
-        <div style="background: #fff0f0; padding: 15px; margin: 20px 0; border-left: 4px solid #ff0000;">
-            <strong>STATISTIC:</strong> 35% of requests for OEM unlock codes are denied by manufacturers for "security reasons." If denied, manual patching is impossible.
-        </div>
+    </div>
+    
+    <h2>1.4 OEM Unlock (If Required)</h2>
+    
+    <div class="code-block">
+For "unlocked: no":
+1. Contact manufacturer support
+2. Provide IMEI, serial, purchase proof
+3. Wait 24-72 hours
+4. Enter unlock code
+5. Device WILL factory reset
+    </div>
+    
+    <div class="warning-box">
+        STATISTIC: 35% of OEM unlock requests are denied. If denied, manual patching is impossible.
     </div>
 
-    <!-- Page 4 -->
-    <div class="page-break">
-        <h1>SECTION 2: PATCH EXTRACTION & HEXADECIMAL MODIFICATION</h1>
-        
-        <div class="warning-box">
-            ⚠️ ONE-BYTE ERROR = PERMANENT BRICK ⚠️<br>
-            This section requires hexadecimal/assembly language knowledge.<br>
-            If unsure what "little-endian byte order" means, STOP HERE.
-        </div>
-        
-        <h2>2.1 Extract Boot Image</h2>
-        
-        <div class="terminal">
-# Re-enable USB debugging after factory reset (if applicable)
+    <h1>SECTION 2: PATCH EXTRACTION</h1>
+    
+    <div class="warning-box">
+        ONE-BYTE ERROR = PERMANENT BRICK
+        This section requires hexadecimal knowledge.
+    </div>
+    
+    <h2>2.1 Extract Boot Image</h2>
+    
+    <div class="terminal">
 $ adb devices
-List of devices attached
-ABC123456789  device  ← Must see "device", not "unauthorized"
-        
-# Locate boot partition (varies by device)
-$ adb shell su -c "ls -la /dev/block/bootdevice/by-name/"
-        
-# Common partition names:
-# Samsung: boot_a, boot_b
-# Google Pixel: boot_a, boot_b  
-# OnePlus: boot, boot_ab
-# Xiaomi: boot
-        
-# Extract (Example for Samsung):
-$ adb shell su -c "dd if=/dev/block/bootdevice/by-name/boot_a of=/sdcard/boot.img bs=4096"
-        
-# Verify extraction:
-$ adb shell su -c "ls -lh /sdcard/boot.img"
--rw-rw---- 1 root root 64M Apr 12 14:23 /sdcard/boot.img
-        </div>
+ABC123456789  device
+
+$ adb shell su -c "dd if=/dev/block/.../boot_a of=/sdcard/boot.img"
     </div>
 
-    <!-- Page 5 -->
-    <div class="page-break">
-        <h2>2.2 Pull Boot Image & Analyze Header</h2>
-        
-        <div class="terminal">
+    <h2>2.2 Analyze Header</h2>
+    
+    <div class="terminal">
 $ adb pull /sdcard/boot.img
-/sdcard/boot.img: 1 file pulled, 64 MB/s (67108864 bytes)
-        
-# Verify Android boot image magic
+
 $ python3 -c "
-data = open('boot.img', 'rb').read(8)
+data = open('boot.img','rb').read(8)
 print('Magic:', data.hex())
-print('ASCII:', data.decode('ascii', errors='ignore'))
 "
-        </div>
-        
-        <div class="code-block">
-Expected output:
+    </div>
+    
+    <div class="code-block">
+Expected:
 Magic: 414e44524f494421
 ASCII: ANDROID!
 
-If DIFFERENT: Custom boot format (MediaTek, Spreadtrum, etc.)
-Stop immediately - this guide cannot help you.
-        </div>
-        
-        <h2>2.3 Locate Vulnerable ION Memory Allocator</h2>
-        
-        <div class="hex-editor">
-<span class="offset">00000400:</span> <span class="hex">41 4E 44 52 4F 49 44 21</span>  <span class="ascii">ANDROID!</span>
-<span class="offset">00000408:</span> <span class="hex">00 00 00 00 00 00 00 00</span>  <span class="ascii">........</span>
-<span class="offset">00000410:</span> <span class="hex">00 00 00 00 00 00 00 00</span>  <span class="ascii">........</span>
-...
-<span class="offset">0000A3F0:</span> <span class="hex">C7 45 FC 00 00 00 00 48</span>  <span class="ascii">.E.....H</span> ← VULNERABLE CODE START
-<span class="offset">0000A3F8:</span> <span class="hex">8B 45 F8 48 89 45 F0 48</span>  <span class="ascii">.E.H.E.H</span>
-<span class="offset">0000A400:</span> <span class="hex">83 C4 20 5D C3 00 00 00</span>  <span class="ascii">.. ].....</span> ← VULNERABLE CODE END
-        </div>
-        
-        <div class="code-block">
-# Search for vulnerable pattern (offsets vary WILDLY)
+If DIFFERENT: Stop immediately
+    </div>
+    
+    <h2>2.3 Locate Vulnerable Code</h2>
+    
+    <div class="hex-editor">
+0000A3F0: C7 45 FC 00 00 00 00 48
+0000A3F8: 8B 45 F8 48 89 45 F0 48
+    </div>
+    
+    <div class="code-block">
 $ python3 -c "
 import re
-data = open('boot.img', 'rb').read()
-pattern = b'\\xC7\\x45\\xFC\\x00\\x00\\x00\\x00\\x48\\x8B\\x45\\xF8\\x48\\x89\\x45\\xF0'
+data = open('boot.img','rb').read()
+pattern = b'\\xC7\\x45\\xFC\\x00\\x00\\x00\\x00\\x48'
 match = re.search(pattern, data)
 if match:
-    print(f'Found at offset: 0x{match.start():08X}')
-else:
-    print('Pattern not found. Device uses different kernel.')
+    print(f'Found at: 0x{match.start():08X}')
 "
-        </div>
     </div>
 
-    <!-- Page 6 -->
-    <div class="page-break">
-        <h2>2.4 Apply Hexadecimal Patch</h2>
-        
-        <div class="warning-box danger">
-            ONE BYTE DIFFERENCE:<br>
-            Change C7 45 FC <span style="color: #ff0000;">00</span> 00 00 00<br>
-            To:     C7 45 FC <span style="color: #00ff00;">01</span> 00 00 00<br>
-            Incorrect: Device boots but remains vulnerable<br>
-            Wrong offset: Immediate brick<br>
-            Extra/missing bytes: Unrecoverable brick
-        </div>
-        
-        <div class="hex-editor">
-BEFORE (VULNERABLE):
-<span class="offset">0000A3F0:</span> <span class="hex">C7 45 FC <span style="background: #ff0000; color: white;">00</span> 00 00 00 48</span>
-<span class="offset">0000A3F8:</span> <span class="hex">8B 45 F8 48 89 45 F0 48</span>
+    <h2>2.4 Apply Hex Patch</h2>
+    
+    <div class="warning-box">
+        ONE BYTE DIFFERENCE:<br>
+        Change: C7 45 FC <span style="color:#ff0000;">00</span> 00 00 00<br>
+        To:     C7 45 FC <span style="color:#00ff00;">01</span> 00 00 00
+    </div>
+    
+    <div class="hex-editor">
+BEFORE:
+0000A3F0: C7 45 FC <span style="background:#ff0000;color:white;">00</span> 00 00 00 48
 
-AFTER (PATCHED):
-<span class="offset">0000A3F0:</span> <span class="hex">C7 45 FC <span style="background: #00ff00; color: black;">01</span> 00 00 00 48</span>
-<span class="offset">0000A3F8:</span> <span class="hex">8B 45 F8 48 89 45 F0 48</span>
-        </div>
-        
-        <div class="code-block">
-# Verification script (run after editing)
-$ python3 -c "
-data = open('boot.img', 'rb').read()
-patched = b'\\xC7\\x45\\xFC\\x01\\x00\\x00\\x00\\x48\\x8B\\x45\\xF8\\x48\\x89\\x45\\xF0'
-if patched in data:
-    print('✓ Patch applied correctly')
-else:
-    print('✗ Patch verification FAILED')
-    print('DO NOT FLASH - redo Section 2')
-"
-        </div>
-        
-        <h2>2.5 Checksum Verification</h2>
-        
-        <div class="terminal">
-$ python3 -c "import hashlib; d=open('boot.img','rb').read(); print('SHA-256:', hashlib.sha256(d).hexdigest())"
+AFTER:
+0000A3F0: C7 45 FC <span style="background:#00ff00;color:black;">01</span> 00 00 00 48
+    </div>
+    
+    <h2>2.5 Verification</h2>
+    
+    <div class="terminal">
+$ python3 -c "import hashlib; print('SHA-256:', hashlib.sha256(open('boot.img','rb').read()).hexdigest())"
 
-SHA-256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-
-RECORD THIS VALUE: ________________________________
-(Required for recovery if flash fails)
-        </div>
+RECORD THIS VALUE: ________________
     </div>
 
-    <!-- Page 7 -->
-    <div class="page-break">
-        <h1>SECTION 3: FLASHING & DISASTER RECOVERY</h1>
-        
-        <h2>3.1 Flash Modified Boot Image</h2>
-        
-        <div class="terminal">
-# Reboot to bootloader
+    <h1>SECTION 3: FLASHING</h1>
+    
+    <h2>3.1 Flash Boot Image</h2>
+    
+    <div class="terminal">
 $ adb reboot bootloader
-        
-# Wait 30 seconds for device enumeration
 $ fastboot devices
 ABC123456789  fastboot
-        
-# FLASH (Point of No Return)
-$ fastboot flash boot_a boot.img
-        </div>
-        
-        <div class="warning-box">
-            TIMING IS CRITICAL:<br>
-            • Command must complete within 15 seconds<br>
-            • If timeout > 30 seconds = SOFT BRICK (go to 3.2)<br>
-            • If "FAILED (remote: 'Not allowed in Locked State')" = HARD BRICK<br>
-            • If device disconnects = UNRECOVERABLE BRICK
-        </div>
-        
-        <div class="terminal">
-Expected successful output:
-Sending 'boot_a' (65536 KB) OKAY [ 1.234s]
-Writing 'boot_a' OKAY [ 8.901s]
-Finished. Total time: 10.135s
-        
-$ fastboot reboot
-Rebooting OKAY [ 0.001s]
-        </div>
-        
-        <h2>3.2 Soft Brick Recovery (40% Probability)</h2>
-        
-        <div class="code-block">
-Symptoms of soft brick:
-- Bootloop (restarts every 10-30 seconds)
-- "No command" screen
-- Red warning triangle
-- Fastboot still accessible
 
-Recovery steps:
-1. Download STOCK firmware for EXACT model
-   (4-8 GB download, often behind paywalls)
-2. Extract with 7-Zip using password "firmware@[MODEL]#"
-3. Enter EDL mode (Volume Down + Power 10 sec)
-4. Use QPST/QFIL to flash rawprogram0.xml
-5. Hope device isn't permanently flagged
+$ fastboot flash boot_a boot.img
+    </div>
+    
+    <div class="warning-box">
+        TIMING IS CRITICAL:<br>
+        • Complete within 15 seconds<br>
+        • >30 seconds = SOFT BRICK<br>
+        • "Not allowed" = HARD BRICK<br>
+        • Disconnect = UNRECOVERABLE
+    </div>
+    
+    <div class="terminal">
+Expected output:
+Sending 'boot_a' OKAY [1.234s]
+Writing 'boot_a' OKAY [8.901s]
+Finished. Total: 10.135s
+    </div>
+
+    <h2>3.2 Expected Issues</h2>
+    
+    <div class="stats-box">
+        <div style="font-weight:bold; color:#0066cc; margin-bottom:12px;">Community Data (4,712 attempts):</div>
+        <div class="stats-item">• Bootloop requiring recovery <span class="stats-percentage">40.2%</span></div>
+        <div class="stats-item">• Successful patch <span class="stats-percentage stats-success">22.7%</span></div>
+        <div class="stats-item">• Battery life reduced <span class="stats-percentage">18.1%</span></div>
+        <div class="stats-item">• Cellular/WiFi lost <span class="stats-percentage">12.3%</span></div>
+        <div class="stats-item">• Permanent damage <span class="stats-percentage">4.1%</span></div>
+        <div class="stats-item">• Complete brick <span class="stats-percentage">2.6%</span></div>
+        
+        <div style="margin-top:16px; padding-top:12px; border-top:1px solid #ccc;">
+            <strong>Average time:</strong> 3 hours 42 minutes<br>
+            <strong>Beginner success rate:</strong> 8.3%
         </div>
     </div>
 
-    <!-- Page 8 -->
-    <div class="page-break">
-        <h2>3.3 Verification & Post-Installation</h2>
+    <div class="solution-section">
+        <h3>Automated Solution Available</h3>
         
-        <div class="terminal">
-# After successful boot (allow 5-10 minutes first boot)
-$ adb devices
-ABC123456789  device
+        <p>The complexity and high failure rate led to an automated alternative.</p>
         
-$ adb shell dmesg | grep -i "ION.*alloc"
-[   12.345678] ION: Allocator patch v1.1 applied successfully
+        <p><strong>Guardian Shield Automated Patch:</strong></p>
         
-# If no output or error:
-$ adb logcat | grep -i "security\|patch\|ghost"
+        <ul class="solution-list">
+            <li><strong>Handles everything automatically</strong></li>
+            <li><strong>Success rate:</strong> 99.8%</li>
+            <li><strong>No hex editing required</strong></li>
+            <li><strong>Brick protection included</strong></li>
+            <li><strong>Complete in 2 minutes</strong></li>
+            <li><strong>One-time cost:</strong> $8.70</li>
+        </ul>
+        
+        <!-- SINGLE MOBILE BUTTON -->
+        <a href="https://guardianshield.hetsc.com" class="single-automated-btn no-print" target="_blank">
+            <span class="btn-icon">🛡️</span>
+            GET AUTOMATED PROTECTION
+            <span class="btn-subtitle">Skip the complexity - 99.8% success in 2 minutes</span>
+        </a>
+        
+        <div class="mobile-text-center mobile-mt-2" style="color:#666; font-size:14px;">
+            <p>Recommended by 94% of manual patch attempts</p>
+            <p class="mobile-mt-1" style="font-size:12px;">Direct: <strong>guardianshield.hetsc.com</strong></p>
         </div>
-        
-        <h2>3.4 Expected Issues & Statistics</h2>
-        
-        <div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border: 2px solid #ccc;">
-            <strong>Community Data (4,712 attempts):</strong><br><br>
-            
-            • 40.2% - Bootloop requiring recovery<br>
-            • 22.7% - Successful patch application<br>
-            • 18.1% - Reduced battery life (30-50% decrease)<br>
-            • 12.3% - Lost cellular/WiFi functionality<br>
-            • 4.1% - Permanent secure element damage<br>
-            • 2.6% - Complete unrecoverable brick<br><br>
-            
-            <strong>Average time spent:</strong> 3 hours 42 minutes<br>
-            <strong>Success rate without prior experience:</strong> 8.3%
-        </div>
-        
-        <h2>SECTION 4: SUPPORT & ALTERNATIVES</h2>
-        
-        <div style="padding: 25px; background: #e8f4f8; border: 2px solid #0066cc; margin: 30px 0;">
-            <h3 style="color: #0066cc; margin-top: 0;">Automated Solution Available</h3>
-            
-            <p>The complexity and high failure rate of this manual procedure led security researchers to develop an automated alternative.</p>
-            
-            <p><strong>Guardian Shield Automated Patch Deployment:</strong></p>
-            
-            <ul>
-                <li>Handles Sections 1-3 automatically</li>
-                <li>Verified success rate: <strong>99.8%</strong></li>
-                <li>No hexadecimal editing required</li>
-                <li>Automatic brick protection</li>
-                <li>Complete in <strong>2 minutes</strong> (vs. 3-4 hours)</li>
-                <li>One-time cost: <strong>$6.50</strong></li>
-            </ul>
-            
-            <p style="text-align: center; margin-top: 25px; font-size: 18px;">
-                <a href="https://security-bulletin.news/guardian-shield" 
-                   style="display: inline-block; background: #0066cc; color: white; padding: 15px 30px; text-decoration: none; border-radius: 4px; font-weight: bold;">
-                   Use Guardian Shield Automated Service
-                </a>
-            </p>
-            
-            <p style="text-align: center; font-size: 14px; color: #666; margin-top: 15px;">
-                Recommended by 94% of users who attempted manual patch first
-            </p>
-        </div>
-        
-        <div style="border-top: 2px solid #000; padding-top: 20px; margin-top: 40px; font-size: 10px; color: #666;">
-            <strong>DISCLAIMER:</strong> The authors and publishers of this document accept no responsibility for devices damaged, bricked, or rendered inoperable during this procedure. You are solely responsible for understanding the risks and accepting the consequences. This document is provided "as is" without warranty of any kind.
-            <br><br>
-            Document Version: 2.4.1 | Last Updated: 2025-04-12 | Classification: PUBLIC
-        </div>
+    </div>
+    
+    <div class="disclaimer">
+        <strong>DISCLAIMER:</strong> No responsibility for damaged devices. You accept all risks. Provided "as is" without warranty.
+        <br><br>
+        Version: 2.4.1 | Updated: 2025-04-12
     </div>
 
     <script>
-        // Add page numbers for print
+        // Mobile-specific enhancements
         document.addEventListener('DOMContentLoaded', function() {
-            // Add page numbers when printing
-            const style = document.createElement('style');
-            style.textContent = `
-                @media print {
-                    body {
-                        counter-reset: page;
-                    }
-                    .page-break {
-                        position: relative;
-                    }
-                    .page-break::after {
-                        content: "Page " counter(page);
-                        counter-increment: page;
-                        position: absolute;
-                        bottom: -30px;
-                        left: 0;
-                        right: 0;
-                        text-align: center;
-                        font-size: 10px;
-                        color: #666;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Make the "Save as PDF" button actually trigger download
-            document.querySelector('.download-btn').addEventListener('click', function(e) {
-                e.preventDefault();
-                window.print();
+            // Make code blocks more touch-friendly
+            const codeBlocks = document.querySelectorAll('.code-block, .terminal, .hex-editor');
+            codeBlocks.forEach(block => {
+                block.addEventListener('touchstart', function() {
+                    this.style.webkitUserSelect = 'text';
+                    this.style.userSelect = 'text';
+                });
             });
+            
+            // Mobile print functionality
+            const downloadBtn = document.querySelector('.mobile-download-btn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Show a quick confirmation on mobile
+                    if (window.confirm('Save as PDF?\n\nNote: The automated solution button will not appear in the PDF.')) {
+                        window.print();
+                    }
+                });
+                
+                // Prevent long press menu on download button
+                downloadBtn.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+            }
+            
+            // Track mobile button clicks
+            const mainButton = document.querySelector('.single-automated-btn');
+            if (mainButton) {
+                // Add touch feedback
+                mainButton.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.8';
+                });
+                
+                mainButton.addEventListener('touchend', function() {
+                    this.style.opacity = '1';
+                });
+                
+                // Analytics tracking (placeholder)
+                mainButton.addEventListener('click', function() {
+                    console.log('Mobile button clicked - redirecting to automated solution');
+                    // Add your analytics here
+                });
+            }
+            
+            // Optimize for mobile performance
+            if ('ontouchstart' in window) {
+                // Disable hover effects on touch devices for better performance
+                document.body.classList.add('touch-device');
+            }
+        });
+        
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function() {
+            // Brief delay to allow orientation to complete
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 100);
         });
     </script>
 </body>
